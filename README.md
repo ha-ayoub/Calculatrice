@@ -8,7 +8,7 @@
 J’ai développé cette calculatrice scientifique pour combiner ma passion du React et des interfaces intuitives.
 Elle permet d’effectuer aussi bien des calculs simples que des opérations scientifiques plus avancées (comme les racines, puissances, fonctions trigonométriques ou logarithmes).
 
-L’application est construite avec React, Vite, JavaScript et CSS.
+L’application est construite avec React, JavaScript et CSS.
 
 ✨ Fonctionnalités
 
@@ -28,7 +28,7 @@ L’application est construite avec React, Vite, JavaScript et CSS.
 I built this scientific calculator as a way to mix my love for React with creating clean and user-friendly interfaces.
 It handles both basic arithmetic and advanced scientific operations (like powers, roots, trigonometry, and logarithms).
 
-The app is built with React, Vite, JavaScript, and CSS.
+The app is built with React, JavaScript, and CSS.
 
 ✨ Features
 
