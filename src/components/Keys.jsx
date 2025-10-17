@@ -1,7 +1,6 @@
 export default function Keys({ handleButton }) {
 
     const sciKeys = ["sin", "cos", "ln", "log", "tan", "π", "e", "^", "!", "√"];
-
     const basicKeys = [
         "7", "8", "9", "*", "/",
         "4", "5", "6", "-", "(",
