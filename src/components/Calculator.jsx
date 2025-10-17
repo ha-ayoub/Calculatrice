@@ -1,7 +1,8 @@
-import { useReducer } from "react";
+import { useReducer, useState } from "react";
+import { factorial, extractLastNum, calculateResult, SCI_FUNC } from '../utils/External_Functions';
 import Display from "./Display";
 import Keys from "./Keys";
-import { factorial, extractLastNum, calculateResult, SCI_FUNC } from '../utils/External_Functions';
+import History from "./History";
 
 function calculatorReducer(state, action) {
   const { value } = action;
@@ -9,6 +10,7 @@ function calculatorReducer(state, action) {
   switch (value) {
     case "AC":
       return {
+        ...state,
         expression: "",
         displayExp: "",
         result: "0"
@@ -43,30 +45,30 @@ function calculatorReducer(state, action) {
     }
     case "=": {
       const result = calculateResult(state.expression);
+      const newEntry = {
+        expression: state.displayExp,
+        result,
+      };
+
+      const lastEntry = state.history[0];
+      const isDuplicate =
+        lastEntry &&
+        lastEntry.expression === newEntry.expression &&
+        lastEntry.result === newEntry.result;
+
       return {
         ...state,
-        result
+        result,
+        history: isDuplicate ? state.history : [newEntry, ...state.history],
       };
     }
     default:
       if (value in SCI_FUNC) {
-
-        const funcsWithParenthesis = ["sin", "cos", "tan", "ln", "log", "e"];
-
-        if (funcsWithParenthesis.includes(value)) {
-          return {
-            ...state,
-            expression: state.expression + SCI_FUNC[value] + '(',
-            displayExp: state.displayExp + value + '('
-          };
-        } else {
-          return {
-            ...state,
-            expression: state.expression + SCI_FUNC[value],
-            displayExp: state.displayExp + value
-          };
-        }
-
+        return {
+          ...state,
+          expression: state.expression + SCI_FUNC[value],
+          displayExp: state.displayExp + value
+        };
       } else {
         return {
           ...state,
@@ -81,17 +83,25 @@ export default function Calculator() {
   const [state, dispatch] = useReducer(calculatorReducer, {
     expression: "",
     displayExp: "",
-    result: "0"
+    result: "0",
+    history: []
   });
 
   const handleButton = (value) => {
     dispatch({ value });
   };
 
+  const [showHistory, setShowHistory] = useState(false);
+
   return (
-    <div className="calculator">
-      <Display displayExpression={state.displayExp} result={state.result} />
-      <Keys handleButton={handleButton} />
+    <div className="calculator-container">
+
+      <div className="calculator">
+        <Display displayExpression={state.displayExp} result={state.result} setShowHistory={setShowHistory} />
+        <Keys handleButton={handleButton} />
+      </div>
+
+      {showHistory && (<History history={state.history} onClose={() => setShowHistory(false)} />)}
     </div>
   )
 }
