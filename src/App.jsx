@@ -1,4 +1,5 @@
 import Calculator from "./components/Calculator";
+import Signature from "./components/Signature";
 
 export default function App() {
   return (
@@ -7,9 +8,7 @@ export default function App() {
         <h1>Scientific Calculator</h1>
       </div>
       <Calculator />
-      <p className="developer_info">
-        Developped by 👨‍💻 <span>ha-ayoub</span>
-      </p>
+      <Signature />
     </div>
   )
 }

@@ -1,8 +1,7 @@
 import { useReducer } from "react";
 import Display from "./Display";
 import Keys from "./Keys";
-import { SCI_FUNC } from "../Helper/SCIENTIFIC_FUNCTION"
-import { factorial, extractLastNum, calculateResult } from '../Helper/External_Functions';
+import { factorial, extractLastNum, calculateResult, SCI_FUNC } from '../utils/External_Functions';
 
 function calculatorReducer(state, action) {
   const { value } = action;
@@ -29,7 +28,7 @@ function calculatorReducer(state, action) {
         displayExp: state.displayExp + value
       };
 
-    case "!":{
+    case "!": {
       const lastNum = extractLastNum(state.expression);
       if (lastNum != null) {
         const num = parseFloat(lastNum);
@@ -42,7 +41,7 @@ function calculatorReducer(state, action) {
       }
       return state;
     }
-    case "=":{
+    case "=": {
       const result = calculateResult(state.expression);
       return {
         ...state,
@@ -51,11 +50,23 @@ function calculatorReducer(state, action) {
     }
     default:
       if (value in SCI_FUNC) {
-        return {
-          ...state,
-          expression: state.expression + SCI_FUNC[value],
-          displayExp: state.displayExp + value
-        };
+
+        const funcsWithParenthesis = ["sin", "cos", "tan", "ln", "log", "e"];
+
+        if (funcsWithParenthesis.includes(value)) {
+          return {
+            ...state,
+            expression: state.expression + SCI_FUNC[value] + '(',
+            displayExp: state.displayExp + value + '('
+          };
+        } else {
+          return {
+            ...state,
+            expression: state.expression + SCI_FUNC[value],
+            displayExp: state.displayExp + value
+          };
+        }
+
       } else {
         return {
           ...state,
@@ -79,8 +90,8 @@ export default function Calculator() {
 
   return (
     <div className="calculator">
-      <Display displayExpression={state.displayExp} result={state.result}/>
-      <Keys handleButton={handleButton}/>
+      <Display displayExpression={state.displayExp} result={state.result} />
+      <Keys handleButton={handleButton} />
     </div>
   )
 }
